@@ -1,5 +1,5 @@
 import data from "./data.js";
-import { searchMovieByTitle, makeBgActive } from "./helpers.js";
+import { searchMovieByTitle, makeBgActive, addCategories } from "./helpers.js";
 
 class MoviesApp {
     constructor(options) {
@@ -37,25 +37,7 @@ class MoviesApp {
             const count = yearArr.filter(item => item === year).length;
             res[year] = count;
         })
-        const $yearFilterParentEl = document.querySelector('.year-form-check');
-
-        for (let val in res) {
-            const $categoryContainer = document.createElement('div');
-            $categoryContainer.className = "form-check";
-            const $el = document.createElement('input');
-            const $labelEl = document.createElement('label');
-            $el.className = "form-check-input"
-            $el.type = "radio"
-            $el.name = "year"
-            $el.id = val
-            $el.value = val
-            $labelEl.className = "form-check-label"
-            $labelEl.for = val
-            $labelEl.innerText = `${val} (${res[val]})`;
-            $categoryContainer.appendChild($el)
-            $categoryContainer.appendChild($labelEl)
-            $yearFilterParentEl.appendChild($categoryContainer)
-        }
+        addCategories(res, "radio", "year");
     }
     /* GENRE CATEGORIES*/
     getGenreCategories() {
@@ -69,23 +51,7 @@ class MoviesApp {
         })
         const $genreFilterParentEl = document.querySelector('.genre-box');
         const $genreButton = document.querySelector('.genre-button')
-        for (let val in res) {
-            const $categoryContainer = document.createElement('div');
-            $categoryContainer.className = "form-check";
-            const $el = document.createElement('input');
-            const $labelEl = document.createElement('label');
-            $el.className = "form-check-input"
-            $el.type = "checkbox"
-            $el.name = "genre"
-            $el.id = "flexCheckDefault"
-            $el.value = val
-            $labelEl.className = "form-check-label"
-            $labelEl.for = "flexCheckDefault"
-            $labelEl.innerText = `${val} (${res[val]})`;
-            $categoryContainer.appendChild($el)
-            $categoryContainer.appendChild($labelEl)
-            $genreFilterParentEl.insertBefore($categoryContainer, $genreButton);
-        }
+        addCategories(res, "checkbox", "genre");
     }
 
     reset() {
@@ -93,7 +59,6 @@ class MoviesApp {
             item.style.background = "transparent";
         })
     }
-
 
     handleSearch() {
         this.$searchForm.addEventListener("submit", (event) => {
